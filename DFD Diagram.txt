@@ -1,0 +1,66 @@
+                             +-----------------------+
+                             |     Admin Login UI    |
+                             +-----------------------+
+                                       |
+                          POST /api/auth/login (credentials)
+                                       |
+                             +-----------------------+
+                             |   AuthController       |
+                             +-----------------------+
+                                       |
+                             +-----------------------+
+                             |   AuthService (JWT)    |
+                             +-----------------------+
+                                       |
+                                [Validate & Issue Token]
+                                       |
+                                       v
+                        Token Stored in Frontend (e.g. localStorage)
+                                       |
+                                       v
+
+        ┌────────────────────────── Admin Dashboard ─────────────────────────────┐
+        |                                                                       |
+        |                                                                       |
+        |  +----------------+      +---------------------+    +---------------+ |
+        |  | Stock Management|      | Invoice Generation  |    | Customer Mgmt| |
+        |  +----------------+      +---------------------+    +---------------+ |
+        |       |                          |                        |           |
+        |  POST /api/products        POST /api/invoices       POST /api/customers|
+        |       |                          |                        |           |
+        └───────┼──────────────────────────┼────────────────────────┼───────────┘
+                |                          |                        |
+       +----------------+        +---------------------+   +------------------+
+       |ProductController|        | InvoiceController   |   | CustomerController|
+       +----------------+        +---------------------+   +------------------+
+                |                          |                        |
+        +---------------+         +------------------+     +-------------------+
+        | ProductService|         | InvoiceService   |     | CustomerService   |
+        +---------------+         +------------------+     +-------------------+
+                |                          |                        |
+        +-----------------+    +--------------------------+   +-----------------+
+        | ProductRepository|    | InvoiceRepository       |   | CustomerRepo    |
+        +-----------------+    | InvoiceItemRepository    |   +-----------------+
+                               +--------------------------+
+                                        |
+                             Updates Stock Automatically
+                                        |
+                                        v
+
+                        +------------------------------------+
+                        |       MySQL / PostgreSQL DB        |
+                        | (Products, Invoices, Customers, etc)|
+                        +------------------------------------+
+
+
+                              Optional Modules:
+                             -------------------
+
+    +---------------------+         +--------------------+      +------------------------+
+    |  Barcode API        |         |  Payment API       |      |   Reporting API        |
+    | /api/products/bar...|         | /api/payments      |      | /api/reports/sales     |
+    +---------------------+         +--------------------+      +------------------------+
+             |                                |                            |
+             v                                v                            v
+     Fetch product by barcode     Save payment info           Generate sales/inventory/customer reports
+
